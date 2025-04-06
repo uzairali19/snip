@@ -362,12 +362,20 @@ export default function HomePage() {
                 const file = findFileById(fileTree, tabId);
                 if (!file) return null;
 
+                const isActive = activeFileId === file.id;
                 return (
                   <Tab
                     key={file.id}
                     label={
                       <Box display="flex" alignItems="center" gap={1}>
-                        <Typography fontSize={13}>{file.name}</Typography>
+                        <Typography
+                          fontSize={13}
+                          sx={{
+                            color: isActive ? "#1976d2" : "#fff",
+                          }}
+                        >
+                          {file.name}
+                        </Typography>
                         <Tooltip title="Close">
                           <Close
                             fontSize="small"
@@ -380,7 +388,12 @@ export default function HomePage() {
                       </Box>
                     }
                     value={file.id}
-                    sx={{ minHeight: 32, textTransform: "none", fontSize: 13 }}
+                    sx={{
+                      minHeight: 32,
+                      textTransform: "none",
+                      fontSize: 13,
+                      color: isActive ? "#1976d2" : "#fff",
+                    }}
                   />
                 );
               })}
