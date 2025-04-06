@@ -18,7 +18,6 @@ import FileExplorer from "@/components/FileExplorer";
 import NewItemDialog from "@/components/NewItemDialog";
 import { FileNode } from "@/types/file";
 import { v4 as uuid } from "uuid";
-import { DragEndEvent } from "@dnd-kit/core";
 import { debounce } from "lodash";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
