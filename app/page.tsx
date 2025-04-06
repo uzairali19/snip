@@ -257,28 +257,67 @@ export default function HomePage() {
     if (!activeFile || !activeFile.content) return;
 
     setOutputLogs([]);
+    if (editorRef.current) {
+      monaco.editor.setModelMarkers(editorRef.current.getModel(), "owner", []);
+    }
+
+    const logs: string[] = [];
+    const customConsole = {
+      log: (...args: any[]) => {
+        logs.push(args.map((arg) => String(arg)).join(" "));
+      },
+    };
 
     try {
-      const result = new Function(activeFile.content)();
-      setOutputLogs([String(result)]);
-    } catch (error: any) {
-      const lineMatch = error.stack?.match(/<anonymous>:(\d+):(\d+)/);
-      const lineNumber = lineMatch ? parseInt(lineMatch[1]) : null;
+      const fn = new Function(
+        "console",
+        `
+        try {
+          ${activeFile.content}
+        } catch (err) {
+          console.log("Error: " + err.message);
+          if (err.stack) {
+            const match = err.stack.match(/<anonymous>:(\\d+):(\\d+)/);
+            if (match) {
+              console.log("At line " + (parseInt(match[1])));
+            }
+          }
+        }
+      `
+      );
 
-      if (lineNumber && editorRef.current) {
-        monaco.editor.setModelMarkers(editorRef.current.getModel(), "owner", [
-          {
-            startLineNumber: lineNumber,
-            startColumn: 1,
-            endLineNumber: lineNumber,
-            endColumn: 1,
-            message: error.message,
-            severity: monaco.MarkerSeverity.Error,
-          },
-        ]);
+      fn(customConsole);
+      setOutputLogs(logs);
+    } catch (err: any) {
+      const errorMessage = `Syntax Error: ${err.message}`;
+      logs.push(errorMessage);
+
+      if (err.stack) {
+        const match = err.stack.match(/<anonymous>:(\d+):(\d+)/);
+        if (match) {
+          const lineNumber = parseInt(match[1]);
+          logs.push("At line " + lineNumber);
+
+          if (editorRef.current) {
+            monaco.editor.setModelMarkers(
+              editorRef.current.getModel(),
+              "owner",
+              [
+                {
+                  startLineNumber: lineNumber,
+                  startColumn: 1,
+                  endLineNumber: lineNumber,
+                  endColumn: 1,
+                  message: err.message,
+                  severity: monaco.MarkerSeverity.Error,
+                },
+              ]
+            );
+          }
+        }
       }
 
-      setOutputLogs([`Error: ${error.message}`]);
+      setOutputLogs(logs);
     }
   };
 

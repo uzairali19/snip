@@ -3,7 +3,7 @@
     "id": "4e075ecd-b449-4737-8152-bfa37fe8580c",
     "name": "new.js",
     "type": "file",
-    "content": ""
+    "content": "const helloWorld = 'hello world';\n\nconsole.log(helloWorld)"
   },
   {
     "id": "01a6a544-8129-4d7d-b946-ab8371aae3ec",
