@@ -4,16 +4,8 @@ import { Box, Typography, IconButton, alpha } from "@mui/material";
 import { ChevronRight, ExpandMore } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
-import { FileNode } from "@/types/file";
+import { FileItemProps } from "@/types/file";
 import { getFileIcon } from "./fileIcons";
-
-interface FileItemProps {
-  node: FileNode;
-  level: number;
-  onFileSelect: (fileId: string) => void;
-  selectedFolderId?: string | null;
-  onRightClick: (event: React.MouseEvent, node: FileNode) => void;
-}
 
 export default function FileItem({
   node,

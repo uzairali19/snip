@@ -3,22 +3,11 @@
 import { Box, Typography, IconButton, Tooltip, Snackbar } from "@mui/material";
 import { CreateNewFolder, NoteAdd } from "@mui/icons-material";
 import React, { useState } from "react";
-import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import { FileNode } from "@/types/file";
 import FileItem from "./FileItem";
 import ContextMenu from "./ContextMenu";
 import RenameDialog from "./RenameDialog";
-
-interface FileExplorerProps {
-  tree: FileNode[];
-  onFileSelect: (fileId: string) => void;
-  onAddFile: () => void;
-  onAddFolder: () => void;
-  selectedFolderId?: string | null;
-  onDragEnd: (event: DragEndEvent) => void;
-  onUpdateTree: (tree: FileNode[]) => void;
-  showToast: (msg: string) => void;
-}
+import { FileExplorerProps } from "@/types/fileExplorer";
 
 export default function FileExplorer({
   tree,
@@ -26,7 +15,6 @@ export default function FileExplorer({
   onAddFile,
   onAddFolder,
   selectedFolderId,
-  onDragEnd,
   onUpdateTree,
   showToast,
 }: FileExplorerProps) {
@@ -137,7 +125,7 @@ export default function FileExplorer({
         open={renameDialogOpen}
         initialName={contextNode?.name || ""}
         onClose={() => setRenameDialogOpen(false)}
-        onSubmit={(newName) => {
+        onSubmit={(newName: string) => {
           setRenameDialogOpen(false);
           handleRename(newName);
         }}

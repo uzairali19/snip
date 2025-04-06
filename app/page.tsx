@@ -19,7 +19,6 @@ import NewItemDialog from "@/components/NewItemDialog";
 import { FileNode } from "@/types/file";
 import { v4 as uuid } from "uuid";
 import { DragEndEvent } from "@dnd-kit/core";
-import { executeCode } from "@/util/useCodeExecutor";
 import { debounce } from "lodash";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
@@ -215,18 +214,6 @@ export default function HomePage() {
     return updated;
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-    const updatedTree = moveNode(
-      fileTree,
-      active.id as string,
-      over.id as string
-    );
-    setFileTree(updatedTree);
-    saveTreeToBackend(updatedTree);
-  };
-
   const handleUpdateTree = (updated: FileNode[]) => {
     setFileTree(updated);
     saveTreeToBackend(updated);
@@ -319,7 +306,6 @@ export default function HomePage() {
             }}
             onUpdateTree={handleUpdateTree}
             selectedFolderId={selectedFolderId}
-            onDragEnd={handleDragEnd}
             showToast={() => {}}
           />
         </Box>

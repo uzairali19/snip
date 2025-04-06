@@ -1,5 +1,6 @@
 "use client";
 
+import { RenameDialogProps } from "@/types/renameDialog";
 import {
   Dialog,
   DialogTitle,
@@ -9,13 +10,6 @@ import {
   Button,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-
-interface RenameDialogProps {
-  open: boolean;
-  initialName: string;
-  onClose: () => void;
-  onSubmit: (newName: string) => void;
-}
 
 export default function RenameDialog({
   open,

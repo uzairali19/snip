@@ -1,5 +1,6 @@
 "use client";
 
+import { NewItemDialogProps } from "@/types/newItemDialog";
 import {
   Dialog,
   DialogTitle,
@@ -9,13 +10,6 @@ import {
   TextField,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-
-interface NewItemDialogProps {
-  open: boolean;
-  type: "file" | "folder";
-  onClose: () => void;
-  onSubmit: (name: string) => void;
-}
 
 export default function NewItemDialog({
   open,
